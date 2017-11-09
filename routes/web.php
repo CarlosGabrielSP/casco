@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/caixa/form_novo_caixa','CaixasController@formNovoCaixa');
+Route::post('/caixa/novo_caixa','CaixasController@novoCaixa');
+Route::get('/caixa/{id}','CaixasController@selecionaCaixa');
