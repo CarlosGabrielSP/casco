@@ -3,35 +3,37 @@
 namespace casco\Http\Controllers;
 
 use Illuminate\Http\Request;
+use casco\Repositories\CaixaRepository;
+use casco\Repositories\CompetenciaRepository;
 use casco\Caixa;
 
 class CaixasController extends Controller
 {
-    public function formNovoCaixa(){
-    	$caixas = $this->puxaTodosCaixas();
+    public function formNovo(CaixaRepository $caixaRepositorio){
+    	$caixas = $caixaRepositorio->buscaTodos();
     	//dd($caixas);
     	return view('caixa.form_novo_caixa')->with(['caixas'=>$caixas]);
     }
-    public function selecionaCaixa(Request $request, $id){
-    	$caixa = $this->puxaCaixa($id);
-    	$request->session()->put('caixa',$caixa);
-    	return back();
+
+    public function selecionaCaixa(CompetenciaRepository $compRepositorio, CaixaRepository $caixaRepositorio, Request $request, $id){
+    	$caixa = $caixaRepositorio->busca($id);
+        $request->session()->put('caixa',$caixa);
+        if($competencia = $compRepositorio->buscaUltimoComFiltro($caixa)){
+            $request->session()->put('competencia',$competencia);
+        }else{
+            $request->session()->forget('competencia');
+        }
+    	return redirect()->action('CompetenciasController@formNovo');
     }
 
-    public function puxaTodosCaixas(){
-    	return Caixa::all();
-    }
-    public function puxaCaixa($id){
-    	return Caixa::find($id);
-    }
-
-    public function novoCaixa(Request $request){
-    	if ($caixa = Caixa::create($request->only(['nome_caix','descricao_caix']))) {
-    		$request->session()->flash('msg', "Caixa criado: ".$caixa->nome_caix);
-    		$request->session()->put('caixa',$caixa);
-    	}else{
-    		$request->session()->flash('msg', "Erro!");
+    public function novo(CompetenciaRepository $compRepositorio, CaixaRepository $caixaRepositorio, Request $request){
+        $parametros = $request->only(['nome_caix','descricao_caix']);
+    	if ($caixa = $caixaRepositorio->cria($parametros)){
+            $this->selecionaCaixa($compRepositorio,$caixaRepositorio,$request,$caixa->id_caix);
+            $request->session()->flash('msg', "Caixa criado: ".$caixa->nome_caix);
+            return redirect()->action('CompetenciasController@formNovo');   
     	}
-    	return back();
+    	$request->session()->flash('msg', "Erro!");
+    	return redirect()->action('CaixasController@formNovo');
     }
 }

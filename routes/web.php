@@ -12,9 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('index');
 
-Route::get('/caixa/form_novo_caixa','CaixasController@formNovoCaixa');
-Route::post('/caixa/novo_caixa','CaixasController@novoCaixa');
+
+Route::get('/caixa','CaixasController@formNovo')->name('caixa');
+Route::post('/caixa/novo','CaixasController@novo');
 Route::get('/caixa/{id}','CaixasController@selecionaCaixa');
+
+Route::get('/competencia','CompetenciasController@formNovo')->name('competencia');
+Route::post('/competencia/novo','CompetenciasController@novo');
+Route::get('/competencia/{id}','CompetenciasController@selecionaCompetencia');
+
+Route::get('teste','CompetenciasController@teste');

@@ -17,7 +17,7 @@ class CreateTabelaCompetencias extends Migration
             $table->increments('id_comp');
             $table->integer('mes_comp');
             $table->integer('ano_comp');
-            $table->float('saldoInicial_comp', 8, 2)->nullable();
+            $table->float('saldoInicial_comp', 8, 2);
             $table->float('saldo_comp', 8, 2)->nullable();
             $table->boolean('bloqueio_comp');
             $table->timestamps();
