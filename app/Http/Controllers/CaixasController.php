@@ -11,7 +11,6 @@ class CaixasController extends Controller
 {
     public function formNovo(CaixaRepository $caixaRepositorio){
     	$caixas = $caixaRepositorio->buscaTodos();
-    	//dd($caixas);
     	return view('caixa.form_novo_caixa')->with(['caixas'=>$caixas]);
     }
 
@@ -23,7 +22,7 @@ class CaixasController extends Controller
         }else{
             $request->session()->forget('competencia');
         }
-    	return redirect()->action('CompetenciasController@formNovo');
+    	return redirect()->action('LancamentosController@lancamentos');
     }
 
     public function novo(CompetenciaRepository $compRepositorio, CaixaRepository $caixaRepositorio, Request $request){

@@ -3,39 +3,27 @@
 @section('conteudo')
 <div class="container">
 	<h3>Competência</h3>
-	<div>
-		<ul>
-			@foreach($competencias as $comp)
-			<li>
-				<a href="{{url('competencia/'.$comp->id_comp)}}">
-					{{$comp->mes_comp}}/{{$comp->ano_comp}}
-				</a>
-			</li>
-			@endforeach
-		</ul>
-
-	</div>
 
 	<form action="{{url('competencia/novo')}}" method="POST">
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
 		<select name="mes_comp">
-			<option value="01">Jan</option>
-			<option value="02">Fev</option>
-			<option value="03">Mar</option>
-			<option value="04">Abr</option>
-			<option value="05">Mai</option>
-			<option value="06">Jun</option>
-			<option value="07">Jul</option>
-			<option value="08">Ago</option>
-			<option value="09">Set</option>
-			<option value="10">Out</option>
-			<option value="11">Nov</option>
-			<option value="12">Dez</option>
+			<option value="01" {{date('m')=="01"?"selected":''}}>Jan</option>
+			<option value="02" {{date('m')=="02"?"selected":''}}>Fev</option>
+			<option value="03" {{date('m')=="03"?"selected":''}}>Mar</option>
+			<option value="04" {{date('m')=="04"?"selected":''}}>Abr</option>
+			<option value="05" {{date('m')=="05"?"selected":''}}>Mai</option>
+			<option value="06" {{date('m')=="06"?"selected":''}}>Jun</option>
+			<option value="07" {{date('m')=="07"?"selected":''}}>Jul</option>
+			<option value="08" {{date('m')=="08"?"selected":''}}>Ago</option>
+			<option value="09" {{date('m')=="09"?"selected":''}}>Set</option>
+			<option value="10" {{date('m')=="10"?"selected":''}}>Out</option>
+			<option value="11" {{date('m')=="11"?"selected":''}}>Nov</option>
+			<option value="12" {{date('m')=="12"?"selected":''}}>Dez</option>
 		</select>
 		/
 		<select name="ano_comp">
-			@for($i=date('Y');$i>=date('Y')-10;$i--)
-			<option value="{{$i}}">{{$i}}</option>
+			@for($i=date('Y')+5;$i>=date('Y')-5;$i--)
+			<option value="{{$i}}" {{date('Y')==$i?"selected":''}}>{{$i}}</option>
 			@endfor
 		</select>
 		<br><br>

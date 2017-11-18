@@ -22,6 +22,9 @@ Route::get('/caixa/{id}','CaixasController@selecionaCaixa');
 
 Route::get('/competencia','CompetenciasController@formNovo')->name('competencia');
 Route::post('/competencia/novo','CompetenciasController@novo');
+Route::get('/competencia/novo_proximo','CompetenciasController@novoProximo');
 Route::get('/competencia/{id}','CompetenciasController@selecionaCompetencia');
 
-Route::get('teste','CompetenciasController@teste');
+Route::get('/lancamentos','LancamentosController@lancamentos')->name('lancamentos');
+
+// Route::get('teste','CompetenciasController@teste');

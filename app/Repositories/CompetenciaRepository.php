@@ -6,7 +6,7 @@ use casco\Competencia;
 
 class CompetenciaRepository
 {
-	private $competencia;
+	protected $competencia;
 
 	public function __construct(Competencia $competencia){
 		$this->competencia = $competencia;

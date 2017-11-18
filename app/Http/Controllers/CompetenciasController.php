@@ -8,53 +8,81 @@ use casco\Competencia;
 
 
 class CompetenciasController extends Controller
-{
-    public function formNovo(CompetenciaRepository $compRepositorio, Request $request){
+{	
+	protected $compRepositorio;
+
+	public function __construct(CompetenciaRepository $compRepositorio){
+		$this->compRepositorio = $compRepositorio;
+	}
+
+    public function formNovo(Request $request){
     	if (!$request->session()->has('caixa')){
     		$request->session()->flash('msg','Selecione um Caixa');
 			return redirect()->action('CaixasController@formNovo');
 		}
-		$competencias = $compRepositorio->buscaTodosComFiltro($request->session()->get('caixa'));
-		// dd($competencias);
-    	return view('competencia.form_nova_comp')->with('competencias',$competencias);
+    	return view('competencia.form_nova_comp');
     }
 
-    public function novo(CompetenciaRepository $compRepositorio, Request $request){
+    public function selecionaCompetencia(Request $request,$id){
+    	$competencia = $this->compRepositorio->busca($id); 
+    	$request->session()->put('competencia',$competencia);
+    	return redirect()->action('LancamentosController@lancamentos');
+    }
+
+    public function novo(Request $request){
     	if (!$request->session()->has('caixa')){
     		$request->session()->flash('msg','Antes de criar um Competência nova, seleciona um caixa');
 			return redirect()->action('CaixasController@formNovo');
 		}
-
     	$parametros = $request->only(['mes_comp','ano_comp','saldoInicial_comp']);
     	$parametros['bloqueio_comp'] = FALSE;
     	$parametros['idCaixa_comp'] = $request->session()->get('caixa.id_caix');
-
-    	if($competencia = $compRepositorio->cria($parametros)){
-    		$request->session()->put('competencia',$competencia);
-    		$request->session()->flash('msg','Competencia: '.$competencia->mes_comp.'/'.$competencia->ano_comp.' criada!');
-    	}else {
+    	if(!$competencia = $this->compRepositorio->cria($parametros)){
     		$request->session()->flash('msg','Erro ao criar competência');
+    		return redirect()->route('index');
     	}
-    	return redirect()->route('index');
-    }
-
-    public function selecionaCompetencia(CompetenciaRepository $compRepositorio,Request $request,$id){
-    	$competencia = $compRepositorio->busca($id); 
+    	$request->session()->flash('msg','Competencia: '.$competencia->mes_comp.'/'.$competencia->ano_comp.' criada!');
     	$request->session()->put('competencia',$competencia);
-    	return back();
+		return redirect()->action('LancamentosController@lancamentos');
     }
 
     public function novoProximo(Request $request){
-    	$competencia_atual = $request->session()->get('competencia');
-    	$compProxima = $this->proxima_comp($request);
+    	if (!$request->session()->has('caixa')){
+    		$request->session()->flash('msg','Selecione um Caixa');
+			return redirect()->action('CaixasController@formNovo');
+		}
+		$caixa = $request->session()->get('caixa');
+    	if(!$compUltima = $this->compRepositorio->buscaUltimoComFiltro($caixa)){
+    		return redirect()->action('CompetenciasController@formNovo');
+	    }
+	    $compProxima = $this->proximoCompetencia($request);
+    	$compProxima['saldoInicial_comp'] = $compUltima->saldoInicial_comp;
+    	$compProxima['saldo_comp'] = $compUltima->saldoInicial_comp;
+    	$compProxima['bloqueio_comp'] = FALSE;
+    	$compProxima['idCaixa_comp'] = $compUltima->idCaixa_comp;
+    	if (!$competencia = $this->compRepositorio->cria($compProxima)){
+    		$request->session()->flash('msg','Erro!');
+    		return redirect()->route('index');
+    	}
+    	$request->session()->flash('msg','Competencia: '.$competencia->mes_comp.'/'.$competencia->ano_comp.' criada!');
+    	$request->session()->put('competencia',$competencia);
+		return redirect()->action('LancamentosController@lancamentos');
     }
 
-    public function proxima_comp(Request $request){
+    public function proximoCompetencia(Request $request){
+    	if (!$request->session()->has('caixa')){
+    		$request->session()->flash('msg','Selecione um Caixa');
+			return redirect()->action('CaixasController@formNovo');
+		}
+    	if (!$request->session()->has('competencia')){
+    		$request->session()->flash('msg','Selecione um Competencia');
+			return redirect()->action('CompetenciasController@formNovo');
+		}
     	$ano_atual = $request->session()->get('competencia.ano_comp');
     	$mes_atual = $request->session()->get('competencia.mes_comp');
     	if($mes_atual==12){
     		return ['mes_comp'=>01,'ano_comp'=>$ano_atual+1];
     	}
-    	return return ['mes_comp'=>$mes_atual+1,'ano_comp'=>$ano_atual];
+    	return ['mes_comp'=>$mes_atual+1,'ano_comp'=>$ano_atual];
     }
 }

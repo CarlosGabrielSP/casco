@@ -8,7 +8,7 @@
 <body>
 	<a href="{{route('index')}}">Home</a>
 	<a href="{{route('caixa')}}">Caixa</a>
-	<a href="{{route('competencia')}}">Competência</a>
+	<a href="{{route('lancamentos')}}">Competência</a>
 	<br><br>
 	@if(session('caixa'))
 		<h1>{{session('caixa.nome_caix')}}</h1>
