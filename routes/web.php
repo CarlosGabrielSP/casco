@@ -20,11 +20,14 @@ Route::get('/caixa','CaixasController@formNovo')->name('caixa');
 Route::post('/caixa/novo','CaixasController@novo');
 Route::get('/caixa/{id}','CaixasController@selecionaCaixa');
 
-Route::get('/competencia','CompetenciasController@formNovo')->name('competencia');
-Route::post('/competencia/novo','CompetenciasController@novo');
-Route::get('/competencia/novo_proximo','CompetenciasController@novoProximo');
-Route::get('/competencia/{id}','CompetenciasController@selecionaCompetencia');
+Route::get('/competencia','LancamentosController@formNovaCompetencia')->name('competencia');
+Route::post('/competencia/novo','LancamentosController@criaPrimeiraCompetencia');
+Route::get('/competencia/novo/{mes}/{ano}','LancamentosController@criaProximaCompetencia');
+Route::get('/competencia/{mes}/{ano}','LancamentosController@selecionaCompetencia');
 
 Route::get('/lancamentos','LancamentosController@lancamentos')->name('lancamentos');
+Route::post('/lancamentos/novo','LancamentosController@novo');
+// Route::get('/lancamentos/{id}','LancamentosController@selecionaLancamento');
+Route::get('/lancamentos/atualiza','LancamentosController@atualizaSaldosIniciais');
 
-// Route::get('teste','CompetenciasController@teste');
+Route::get('teste','LancamentosController@teste');

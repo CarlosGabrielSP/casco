@@ -8,13 +8,14 @@
 <body>
 	<a href="{{route('index')}}">Home</a>
 	<a href="{{route('caixa')}}">Caixa</a>
-	<a href="{{route('lancamentos')}}">Competência</a>
+	<a href="{{route('lancamentos')}}">Lançamentos</a>
+	<a href="{{url('lancamentos/atualiza')}}">Atualizar</a>
 	<br><br>
 	@if(session('caixa'))
 		<h1>{{session('caixa.nome_caix')}}</h1>
 	@endif
 	@if(session('competencia'))
-		<h3>{{session('competencia.mes_comp')}}/{{session('competencia.ano_comp')}}</h3>
+		<h3>{{session('competencia')}}</h3>
 	@endif
 	@if(session('msg'))
 		<p>{{session('msg')}}</p>

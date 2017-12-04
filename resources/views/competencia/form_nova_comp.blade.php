@@ -6,7 +6,7 @@
 
 	<form action="{{url('competencia/novo')}}" method="POST">
 		<input type="hidden" name="_token" value="{{csrf_token()}}">
-		<select name="mes_comp">
+		<select name="mes">
 			<option value="01" {{date('m')=="01"?"selected":''}}>Jan</option>
 			<option value="02" {{date('m')=="02"?"selected":''}}>Fev</option>
 			<option value="03" {{date('m')=="03"?"selected":''}}>Mar</option>
@@ -21,7 +21,7 @@
 			<option value="12" {{date('m')=="12"?"selected":''}}>Dez</option>
 		</select>
 		/
-		<select name="ano_comp">
+		<select name="ano">
 			@for($i=date('Y')+5;$i>=date('Y')-5;$i--)
 			<option value="{{$i}}" {{date('Y')==$i?"selected":''}}>{{$i}}</option>
 			@endfor
@@ -29,7 +29,7 @@
 		<br><br>
 		<label>
 			Saldo Inicial: 
-			<input type="number" name="saldoInicial_comp" placeholder="Saldo Inicial" value="0.00" step="0.01" min="0.00" 
+			<input type="number" name="saldoInicial" placeholder="Saldo Inicial" value="0.00" step="0.01" min="0.00" 
 			required>
 		</label>
 		<br><br>

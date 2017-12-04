@@ -10,7 +10,7 @@ class Caixa extends Model
     protected $primaryKey = 'id_caix';
     protected $fillable = ['nome_caix','descricao_caix'];
 
-    public function competencia(){
-    	return $this->hasMany('casco\Competencia');
+    public function lancamentos(){
+    	return $this->hasMany('casco\Lancamento');
     }
 }

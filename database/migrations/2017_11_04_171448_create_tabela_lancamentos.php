@@ -19,16 +19,16 @@ class CreateTabelaLancamentos extends Migration
             $table->float('valor_lanc', 8, 2);
             $table->date('data_lanc');
             $table->text('descricao_lanc');
-            $table->date('vencimento_lanc')->nullable();
+            // $table->date('vencimento_lanc')->nullable();
             // $table->boolean('fixo');
             // $table->integer('parcela_lanc')->nullable();
             // $table->integer('totalParcelas_lanc')->nullable();
             $table->timestamps();
 
-            $table->integer('idCompetencia_lanc');
-            $table->integer('idFornecedor_lanc')->nullable();
+            $table->integer('idCaixa_lanc')->unsigned();
+            $table->integer('idFornecedor_lanc')->unsigned()->nullable();
 
-            $table->foreign('idCompetencia_lanc')->references('id_comp')->on('competencias')->onDelete('cascade');
+            $table->foreign('idCaixa_lanc')->references('id_caix')->on('caixas')->onDelete('cascade');
             $table->foreign('idFornecedor_lanc')->references('id_forn')->on('fornecedores')->onDelete('cascade');
         });
     }

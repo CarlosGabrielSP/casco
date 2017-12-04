@@ -4,7 +4,7 @@ namespace casco\Repositories;
 
 use casco\Caixa;
 
-class CaixaRepository
+class CaixaDAO
 {
 	private $caixa;
 
