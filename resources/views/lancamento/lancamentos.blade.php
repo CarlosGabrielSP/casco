@@ -21,7 +21,7 @@
 				Saldo Inicial:
 			</td>
 			<td align="right">
-				{{$saldo_inicial}}
+				R$ {{number_format($saldo_inicial, 2, ',', '.')}}
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +37,8 @@
 			<td>{{$lancamento->tipo_lanc}}</td>
 			<td>{{$lancamento->data_lanc}}</td>
 			<td>{{$lancamento->descricao_lanc}}</td>
-			<td align="right">{{$lancamento->valor_lanc}}</td>
+			<td align="right">R$ {{number_format($lancamento->valor_lanc, 2, ',', '.')}}</td>
+			<td><a href="{{url('lancamentos/excluir/'.$lancamento->id_lanc)}}">Excluir</a></td>
 		</tr>
 		@endforeach
 		<tr>
@@ -57,10 +58,10 @@
 		</tr>
 		<tr>
 			<td colspan="4" align="right">
-				Saldo Atual:
+				Saldo Total:
 			</td>
 			<td align="right">
-				{{$saldo_total}}
+				R$ {{number_format($saldo_total, 2, ',', '.')}}
 			</td>
 		</tr>
 	</table>

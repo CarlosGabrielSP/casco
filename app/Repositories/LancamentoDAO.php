@@ -21,6 +21,10 @@ class LancamentoDAO
 		return $this->lancamento->find($id);
 	}
 
+	public function excluir($id){
+		return $this->lancamento->find($id)->delete();
+	}
+
 	public function buscaTodos($idCaixa){
 		return $this->lancamento->where('idCaixa_lanc',$idCaixa)
 								->orderBy('data_lanc')

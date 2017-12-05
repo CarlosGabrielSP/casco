@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>CASH CONTROL</title>
-	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>

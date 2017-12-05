@@ -118,6 +118,7 @@ class LancamentosController extends Controller
 		$parametros['idCaixa_lanc'] = $caixa->id_caix;
 		if($this->lancamentoDAO->cria($parametros)){
 			$request->session()->put('competencia',$proximaCompetencia);
+			$this->atualizaSaldosIniciais($request);
 			return redirect()->route('lancamentos');
 		}else{
 			$request->session()->flash('msg','Erro!');
@@ -125,11 +126,24 @@ class LancamentosController extends Controller
 		}
     }
 
+    public function excluirLancamento(Request $request, $id){
+    	$lancamento = $this->lancamentoDAO->busca($id);
+    	if ($this->lancamentoDAO->excluir($id)){
+    		$request->session()->flash(
+    			'msg',$lancamento->descricao_lanc.' / '.$lancamento->data_lanc.' / '.$lancamento->valor_lanc.'. Foi excluido.'
+    		);
+    		$this->atualizaSaldosIniciais($request);
+    	}else{
+    		$request->session()->flash('msg','Erro!');
+    	}
+    	return back();
+    }
+
     public function atualizaSaldosIniciais(Request $request){
     	$caixa = $request->session()->get('caixa');
     	$competencias = $this->lancamentoDAO->buscaTodasCompetencias($caixa->id_caix);
     	$i=0;
-    	$soma = 0;
+    	$soma=0;
     	foreach ($competencias as $comp){
     		$lancamentos = $this->lancamentoDAO->buscaTodosComFiltro($caixa->id_caix,$comp->mes_ano);
     		if($i){
@@ -139,7 +153,7 @@ class LancamentosController extends Controller
     		$soma = $lancamentos->sum('valor_lanc');
     		$i++;
     	}
-    	return redirect()->route('lancamentos');
+    	// return redirect()->route('lancamentos');
     }
     // public function definirProxCompetencia($mes, $ano){
     // 	if($mes[0]==12){
