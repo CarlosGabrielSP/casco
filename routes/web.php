@@ -27,7 +27,7 @@ Route::get('/competencia/{mes}/{ano}','LancamentosController@selecionaCompetenci
 
 Route::get('/lancamentos','LancamentosController@lancamentos')->name('lancamentos');
 Route::post('/lancamentos/novo','LancamentosController@novo');
-Route::get('/lancamentos/excluir/{id}','LancamentosController@excluirLancamento');
-Route::get('/lancamentos/atualiza','LancamentosController@atualizaSaldosIniciais');
+Route::get('/lancamentos/excluir/{id}','LancamentosController@remover');
+Route::get('/lancamentos/alterar','LancamentosController@alterar');
 
 Route::get('teste','LancamentosController@teste');

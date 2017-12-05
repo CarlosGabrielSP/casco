@@ -23,6 +23,7 @@ class CaixasController extends Controller
         $request->session()->forget('competencia');
     	$caixa = $this->caixaDAO->busca($id);
         $request->session()->put('caixa',$caixa);
+        $request->session()->forget('comeptencia');
     	return redirect()->route('lancamentos');
     }
 

@@ -1,5 +1,9 @@
 @extends('layout.template1')
 
+@php
+$sessionComp = explode('/',session('competencia'));
+@endphp
+
 @section('conteudo')
 <div class="container" style="background-color: white">
 	<h3>Competência</h3>
@@ -41,6 +45,8 @@
 			<td><a href="{{url('lancamentos/excluir/'.$lancamento->id_lanc)}}">Excluir</a></td>
 		</tr>
 		@endforeach
+
+		@if(($sessionComp[0]>=date('m') && $sessionComp[1]==date('Y')) || $sessionComp[1]>date('Y'))
 		<tr>
 			<form action="{{url('lancamentos/novo')}}" method="POST">
 				<td>
@@ -56,6 +62,7 @@
 				<td><input type="submit" name="enviar"></td>
 			</form>
 		</tr>
+		@endif
 		<tr>
 			<td colspan="4" align="right">
 				Saldo Total:

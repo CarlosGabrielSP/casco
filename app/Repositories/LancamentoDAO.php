@@ -21,6 +21,10 @@ class LancamentoDAO
 		return $this->lancamento->find($id);
 	}
 
+	public function atualizar($id,$parametros){
+		return $this->lancamento->find($id)->update($parametros);
+	}
+
 	public function excluir($id){
 		return $this->lancamento->find($id)->delete();
 	}
@@ -29,11 +33,6 @@ class LancamentoDAO
 		return $this->lancamento->where('idCaixa_lanc',$idCaixa)
 								->orderBy('data_lanc')
 								->get();
-	}
-
-	public function buscaTodasCompetencias($id_caix){
-		$competencias = DB::select("SELECT DISTINCT strftime('%m', data_lanc) || '/' || strftime('%Y', data_lanc) AS mes_ano FROM lancamentos WHERE idCaixa_lanc = $id_caix");
-		return collect($competencias);
 	}
 
 	public function buscaTodosComFiltro($idCaixa,$competencia){
@@ -55,5 +54,17 @@ class LancamentoDAO
 								->where($coluna,$conteudo)
 								->orderBy('data_lanc')
 								->get();
+	}
+
+	// =============================================
+
+	public function buscaTodasCompetencias($id_caix){
+		$competencias = DB::select("SELECT DISTINCT strftime('%m', data_lanc) || '/' || strftime('%Y', data_lanc) AS mes_ano FROM lancamentos WHERE idCaixa_lanc = $id_caix");
+		return collect($competencias);
+	}
+
+	public function excluiCompetencia($idCaixa,$competencia){
+		$lancamentos = $this->buscaTodosComFiltro($idCaixa,$competencia);
+		return $lancamentos->delete();
 	}
 }
