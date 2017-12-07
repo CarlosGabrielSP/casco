@@ -19,10 +19,8 @@ class CreateTabelaLancamentos extends Migration
             $table->float('valor_lanc', 8, 2);
             $table->date('data_lanc');
             $table->text('descricao_lanc');
-            // $table->date('vencimento_lanc')->nullable();
-            // $table->boolean('fixo');
-            // $table->integer('parcela_lanc')->nullable();
-            // $table->integer('totalParcelas_lanc')->nullable();
+            $table->boolean('fixo_lanc')->nullable();
+            $table->string('cor_lanc')->nullable();
             $table->timestamps();
 
             $table->integer('idCaixa_lanc')->unsigned();

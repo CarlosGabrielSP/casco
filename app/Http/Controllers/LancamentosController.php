@@ -22,12 +22,12 @@ class LancamentosController extends Controller
 		$caixa = $request->session()->get('caixa');
 		$competencias = $this->lancamentoDAO->buscaTodasCompetencias($caixa->id_caix);
 		if(!$competencias->count()){
-			$request->session()->flash('msg','Crie um Competencia');
+			$request->session()->flash('msg','Crie uma Competencia');
 			return redirect()->route('competencia');
 		}
 		if($request->session()->has('competencia')){
 			$competencia = $request->session()->get('competencia');
-		} else {
+		}else{
 			$competencia = $competencias->last()->mes_ano;
 			$request->session()->put('competencia',$competencia);
 		}
@@ -47,7 +47,7 @@ class LancamentosController extends Controller
 			return redirect()->action('CaixasController@formNovo');
 		}
 		$caixa = $request->session()->get('caixa');
-		$parametros = $request->only(['tipo_lanc','data_lanc','descricao_lanc','valor_lanc']);
+		$parametros = $request->only(['tipo_lanc','fixo_lanc','data_lanc','descricao_lanc','valor_lanc','cor_lanc']);
 		$parametros['idCaixa_lanc'] = $caixa->id_caix;
 		if($parametros['tipo_lanc'] == "despesa") $parametros['valor_lanc'] *= -1;
 		if($this->lancamentoDAO->cria($parametros)){
@@ -64,7 +64,7 @@ class LancamentosController extends Controller
     	$caixa = $request->session()->get('caixa');
     	if ($this->lancamentoDAO->excluir($id)){
     		$request->session()->flash(
-    			'msg',$lancamento->descricao_lanc.' / '.$lancamento->data_lanc.' / '.$lancamento->valor_lanc.'. Foi excluido.'
+    			'msg',$lancamento->descricao_lanc.' | '.$lancamento->data_lanc.' | '.$lancamento->valor_lanc.'. Foi excluido.'
     		);
     		$this->atualizaSaldosIniciais($caixa);
     	}else{
@@ -153,6 +153,18 @@ class LancamentosController extends Controller
 			$request->session()->flash('msg','Erro!');
 			return redirect()->route('index');
 		}
+    }
+
+    public function removerUltimaCompetencia(Request $request){
+        if (!$request->session()->has('caixa')){
+            $request->session()->flash('msg','Selecione um Caixa');
+            return redirect()->action('CaixasController@formNovo');
+        }
+        $caixa = $request->session()->get('caixa');
+        $competencia = $this->lancamentoDAO->buscaTodasCompetencias($caixa->id_caix)->last();
+        $this->lancamentoDAO->excluiCompetencia($caixa->id_caix,$competencia->mes_ano);
+        $request->session()->forget('competencia');
+        return redirect()->route('lancamentos');
     }
 
     public function atualizaSaldosIniciais($caixa){

@@ -6,31 +6,8 @@ $sessionComp = explode('/',session('competencia'));
 
 @section('conteudo')
 <div class="container" style="background-color: white">
-	<h3>Competência</h3>
+	<h3>Despesas Fixas</h3>
 	<table border="1">
-		<tr>
-			@foreach($competencias as $comp)
-			<th>
-				<a href="{{url('competencia/'.$comp->mes_ano)}} ">
-						{{$comp->mes_ano}}
-				</a>
-				@if($comp == $competencias->last())
-				<a href="{{url('competencia/excluir')}}">X</a>
-				@endif
-			</th>
-			@endforeach
-			<th><a href="{{url('competencia/novo/'.$competencias->last()->mes_ano)}}"><strong>Novo</strong></a></th>
-		</tr>
-	</table>
-	<table border="1">
-		<tr>
-			<td colspan="6" align="right">
-				Saldo Inicial:
-			</td>
-			<td align="right">
-				R$ {{number_format($saldo_inicial, 2, ',', '.')}}
-			</td>
-		</tr>
 		<tr>
 			<th>Tipo</th>
 			<th>Fixo</th>

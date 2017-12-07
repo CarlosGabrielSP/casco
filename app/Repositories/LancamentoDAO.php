@@ -64,7 +64,9 @@ class LancamentoDAO
 	}
 
 	public function excluiCompetencia($idCaixa,$competencia){
-		$lancamentos = $this->buscaTodosComFiltro($idCaixa,$competencia);
-		return $lancamentos->delete();
+		$competencias = $this->buscaTodosComFiltro($idCaixa,$competencia);
+		foreach ($competencias as $comp) {
+			$comp->delete();
+		}
 	}
 }

@@ -23,6 +23,7 @@ Route::get('/caixa/{id}','CaixasController@selecionaCaixa');
 Route::get('/competencia','LancamentosController@formNovaCompetencia')->name('competencia');
 Route::post('/competencia/novo','LancamentosController@criaPrimeiraCompetencia');
 Route::get('/competencia/novo/{mes}/{ano}','LancamentosController@criaProximaCompetencia');
+Route::get('/competencia/excluir','LancamentosController@removerUltimaCompetencia');
 Route::get('/competencia/{mes}/{ano}','LancamentosController@selecionaCompetencia');
 
 Route::get('/lancamentos','LancamentosController@lancamentos')->name('lancamentos');
